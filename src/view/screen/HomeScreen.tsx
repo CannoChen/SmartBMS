@@ -26,7 +26,8 @@ import {requestBluetoothPermission} from "../../service/bluetooth.js";
  * 作者：Zeyang Chen
  * 日期：-
  * 增添功能：
- * - 实现读取json格式的蓝牙数据块（未完成）
+ * - 实现读取json格式的蓝牙数据块（已完成）
+ * - 实现蓝牙状态的全局管理（未完成）
  * @constructor
  */
 const HomeScreen = () => {
@@ -206,16 +207,17 @@ const HomeScreen = () => {
      * - 解析蓝牙接收数据。
      */
     const parseReceivedData = (data: String) => {
-        const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$/;
+        const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
         const match = data.match(regex);
         if (match !== null) {
             // console.log("id: ", parseInt(match[1], 10));
             // console.log("name: ", match[2]);
             // console.log("data: ", parseFloat(match[3]));
             return {
-                id: parseInt(match[1], 10),
-                name: match[2],
-                data: parseFloat(match[3]),
+                valHigh: parseFloat(match[1]),
+                valLow: parseFloat(match[2]),
+                temp1: parseFloat(match[3]),
+                temp2: parseFloat(match[4]),
             };
         } else {
             // console.log('数据不匹配：', data);
