@@ -178,24 +178,19 @@ const performRead = async (device: BluetoothDevice) =>  {
 
     // console.log("performRead");
     try {
-        // 测试代码，请勿删除！！！
-        // console.log('Polling for available messages');
         let available = await device.available();
-        // console.log(`There is data available [${available}], attempting read`);
 
         if (available > 0) {
+            console.log(`----------available: ${available}-------------`);
             for (let i = 0; i < available; i++) {
-                // console.log(`reading ${i}th time`);
                 let data = await device.read();
                 if (data) {  // 如果数据不为空，则解析数据
                     let parsedData = parseReceivedData(data);
-
-                    // console.log(`Read data ${data}`);
                     if (parsedData !== null)
                         console.log(parsedData);
                 }
             }
-        }
+        } // if (available > 0)
     } catch (err) {
         console.log(err);
     }
@@ -207,7 +202,7 @@ const performRead = async (device: BluetoothDevice) =>  {
  * 功能：
  * - 解析蓝牙接收数据。
  */
-const parseReceivedData = (data: String) => {
+const parseReceivedData = (data: String): receivedData | null => {
     const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
     const match = data.match(regex);
     if (match !== null) {
@@ -219,6 +214,7 @@ const parseReceivedData = (data: String) => {
             valLow: parseFloat(match[2]),
             temp1: parseFloat(match[3]),
             temp2: parseFloat(match[4]),
+            timeStamp: new Date().toLocaleTimeString().replace(/^\D*/, ''),
         };
     } else {
         // console.log('数据不匹配：', data);
@@ -226,6 +222,14 @@ const parseReceivedData = (data: String) => {
     }
 }
 
+// 蓝牙数据格式
+type receivedData = {
+    valHigh: number,
+    valLow: number,
+    temp1: number,
+    temp2: number
+    timeStamp: string,
+}
 
 export {
     requestBluetoothPermission,
