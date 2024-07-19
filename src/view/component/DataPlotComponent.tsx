@@ -15,6 +15,7 @@ import {
     Dimensions,
     StyleSheet,
 } from "react-native";
+import {useDispatch} from "react-redux";
 
 echarts.use([
     SVGRenderer,
@@ -43,6 +44,7 @@ const categories = (function () {
     }
     return res;
 })();  // categories
+
 const categories2 = (function () {
     let res = [];
     let len = 10;
@@ -51,23 +53,7 @@ const categories2 = (function () {
     }
     return res;
 })();  // categories2
-const data = (function () {
-    let res = [];
-    let len = 10;
-    while (len--) {
-        res.push(Math.round(Math.random() * 1000));
-    }
-    return res;
-})();  // data
-const data2 = (function () {
-    let res = [];
-    let len = 0;
-    while (len < 10) {
-        res.push(+(Math.random() * 10 + 5).toFixed(1));
-        len++;
-    }
-    return res;
-})();  // data2
+
 const option = {
     tooltip: {
         trigger: 'axis',

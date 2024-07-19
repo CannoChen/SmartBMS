@@ -1,6 +1,8 @@
 import RNBluetoothClassic, {BluetoothDevice} from "react-native-bluetooth-classic";
 import {PermissionsAndroid, Platform} from "react-native";
-import {useDispatch} from "react-redux";
+import {Dispatch} from "@reduxjs/toolkit";
+import {pushData} from "./slice/BlutoothSlice.ts";
+import moment from "moment/moment";
 
 const requestBluetoothPermission = async () => {
     if (Platform.OS === 'ios') {
@@ -109,7 +111,7 @@ const startDiscovery = async (device: BluetoothDevice | null) => {
  * - 连接BMS控制单元
  * - 解耦蓝牙扫描与蓝牙连接逻辑
  */
-const connectToPeripheral = async (device: BluetoothDevice | null | undefined) => {
+const connectToPeripheral = async (device: BluetoothDevice | null | undefined, dispatch: Dispatch) => {
     if(device === null || device === undefined) // 如果设备还没有扫描到，则退出连接
         return;  // 状态更新
 
@@ -123,7 +125,7 @@ const connectToPeripheral = async (device: BluetoothDevice | null | undefined) =
             console.log("bluetooth.ts::蓝牙配对成功");
         }
 
-        initializeRead(device);
+        initializeRead(device, dispatch);
     } catch (error) {
         console.log(error);
     }
@@ -135,11 +137,21 @@ const connectToPeripheral = async (device: BluetoothDevice | null | undefined) =
  * 功能：
  * - 连接蓝牙设备
  */
-const connect = async () => {
+const connect = async (dispatch: Dispatch) => {
     console.log("connect");
     await getBondedDevices()
         .then(device => startDiscovery(device))
-        .then(device => connectToPeripheral(device));
+        .then(device => connectToPeripheral(device, dispatch));
+}
+
+/**
+ * 版本：0.1
+ * 日期：2024-07-04
+ * 功能：
+ * - 装饰器设计模式，获取连接蓝牙的函数。
+ */
+const getConnectFunction = (dispatch: Dispatch) => {
+    return () => connect(dispatch);
 }
 
 /**
@@ -150,7 +162,7 @@ const connect = async () => {
  * - device.read()
  * - device.onDataReceived()
  */
-const initializeRead = (device: BluetoothDevice) => {
+const initializeRead = (device: BluetoothDevice, dispatch: Dispatch) => {
     if (device === null)
         return
 
@@ -159,7 +171,7 @@ const initializeRead = (device: BluetoothDevice) => {
         () =>device.disconnect()
     );
     // 方法一：
-    const readInterval = setInterval(() => performRead(device), 100);
+    const readInterval = setInterval(() => performRead(device, dispatch), 100);
     // 方法二：不可用
     // const readSubscription = device.onDataReceived(
     //     event => console.log(device.read())
@@ -172,22 +184,24 @@ const initializeRead = (device: BluetoothDevice) => {
  * 功能：
  * - 读取蓝牙数据。
  */
-const performRead = async (device: BluetoothDevice) =>  {
+const performRead = async (device: BluetoothDevice, dispatch: Dispatch) =>  {
     if (device === null)
         return;
 
-    // console.log("performRead");
+    console.log("performRead");
     try {
         let available = await device.available();
 
         if (available > 0) {
-            console.log(`----------available: ${available}-------------`);
+            // console.log(`----------available: ${available}-------------`);
             for (let i = 0; i < available; i++) {
                 let data = await device.read();
                 if (data) {  // 如果数据不为空，则解析数据
                     let parsedData = parseReceivedData(data);
-                    if (parsedData !== null)
-                        console.log(parsedData);
+                    if (parsedData !== null) {  // 解析成功
+                        // console.log(parsedData);
+                        dispatch(pushData(parsedData));
+                    }
                 }
             }
         } // if (available > 0)
@@ -203,18 +217,17 @@ const performRead = async (device: BluetoothDevice) =>  {
  * - 解析蓝牙接收数据。
  */
 const parseReceivedData = (data: String): receivedData | null => {
-    const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
+    // const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
+    const regex = /\[([^\$]+)\]\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
     const match = data.match(regex);
     if (match !== null) {
-        // console.log("id: ", parseInt(match[1], 10));
-        // console.log("name: ", match[2]);
-        // console.log("data: ", parseFloat(match[3]));
         return {
-            valHigh: parseFloat(match[1]),
-            valLow: parseFloat(match[2]),
-            temp1: parseFloat(match[3]),
-            temp2: parseFloat(match[4]),
-            timeStamp: new Date().toLocaleTimeString().replace(/^\D*/, ''),
+            id: parseInt(match[1], 10),
+            volt: parseFloat(match[2]),
+            pole_temp: parseInt(match[3], 10),
+            bal_temp: parseInt(match[4], 10),
+            timeStamp: getCurrentFormattedTime(),
+            // timeStamp: new Date().toLocaleTimeString().replace(/^\D*/, ''),
         };
     } else {
         // console.log('数据不匹配：', data);
@@ -222,16 +235,29 @@ const parseReceivedData = (data: String): receivedData | null => {
     }
 }
 
+/**
+ * 版本：0.1
+ * 作者：Zeyang Chen
+ * 日期：2024-07-09
+ * 功能：
+ * 获取格式化时间，如“2024-07-09 15:40:54”。
+ */
+const getCurrentFormattedTime = () => {
+    return moment().format('YYYY-MM-DD HH:mm:ss');
+};
+
 // 蓝牙数据格式
 type receivedData = {
-    valHigh: number,
-    valLow: number,
-    temp1: number,
-    temp2: number
+    // valHigh: number,
+    // valLow: number,
+    id: number
+    volt: number,
+    pole_temp: number,
+    bal_temp: number
     timeStamp: string,
 }
 
 export {
     requestBluetoothPermission,
-    connect,
+    getConnectFunction
 };

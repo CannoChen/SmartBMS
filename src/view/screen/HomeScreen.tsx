@@ -12,8 +12,10 @@ import DynamicDataPlotComponent from "../component/DataPlotComponent";
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useBluetoothState} from "../../service/hooks/bluetoothHooks.ts";
-import {connect} from "../../service/bluetooth.ts";
+import {getConnectFunction} from "../../service/bluetooth.ts";
 import RNBluetoothClassic from "react-native-bluetooth-classic";
+import {CellsDataPlotComponent} from "../component/CellsDataPlotComponent.tsx";
+import {off, on} from "../../service/slice/BlutoothSlice.ts";
 
 /**
  * 主屏幕导航
@@ -45,10 +47,10 @@ const HomeScreen = () => {
         });
         // 判断手机是否成功启动蓝牙
         const enabledSubscription = RNBluetoothClassic.onBluetoothEnabled(() => {
-            dispatch({type: "bluetooth/on"});
+            dispatch(on());
         });
         const disabledSubscription = RNBluetoothClassic.onBluetoothDisabled(() => {
-            dispatch({type: "bluetooth/off"});
+            dispatch(off());
         });
         // const readDataInterval = setInterval(readData, 100);
         return () => {
@@ -82,7 +84,7 @@ const HomeScreen = () => {
                       Cell Min Voltage: 3.33V
                   </Text>
 
-                  <TouchableOpacity onPress={connect}>
+                  <TouchableOpacity onPress={getConnectFunction(dispatch)}>
                       <Text>Connect to BMS</Text>
                   </TouchableOpacity>
               </Card>
@@ -93,7 +95,8 @@ const HomeScreen = () => {
                   <Text style={styles.fonts}>
                       Dynamic Data Figure
                   </Text>
-                  <DynamicDataPlotComponent/>
+                  {/*<DynamicDataPlotComponent/>*/}
+                  <CellsDataPlotComponent/>
               </Card>
           </ScrollView>
       </SafeAreaView>
