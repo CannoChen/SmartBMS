@@ -187,8 +187,6 @@ const initializeRead = (device: BluetoothDevice, dispatch: Dispatch) => {
 const performRead = async (device: BluetoothDevice, dispatch: Dispatch) =>  {
     if (device === null)
         return;
-
-    console.log("performRead");
     try {
         let available = await device.available();
 
@@ -221,7 +219,7 @@ const parseReceivedData = (data: String): receivedData | null => {
     const regex = /\[([^\$]+)\]\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
     const match = data.match(regex);
     if (match !== null) {
-        return {
+        const data_received = {
             id: parseInt(match[1], 10),
             volt: parseFloat(match[2]),
             pole_temp: parseInt(match[3], 10),
@@ -229,6 +227,8 @@ const parseReceivedData = (data: String): receivedData | null => {
             timeStamp: getCurrentFormattedTime(),
             // timeStamp: new Date().toLocaleTimeString().replace(/^\D*/, ''),
         };
+        // console.log(`id ${data_received.id} volt: ${data_received.volt}`)
+        return data_received;
     } else {
         // console.log('数据不匹配：', data);
         return null;
@@ -248,8 +248,6 @@ const getCurrentFormattedTime = () => {
 
 // 蓝牙数据格式
 type receivedData = {
-    // valHigh: number,
-    // valLow: number,
     id: number
     volt: number,
     pole_temp: number,

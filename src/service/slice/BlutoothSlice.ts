@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSelector, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {SERVER_URL, PORT} from "../../config/url_config.ts";
 
 
 /**
@@ -26,6 +27,7 @@ const BluetoothSlice = createSlice({
             "3": [],
             "4": [],
             "5": [],
+            "6": [],
         },
         // 缓冲区2，用于发送并存储到服务器端；
         dataCache: {
@@ -34,6 +36,7 @@ const BluetoothSlice = createSlice({
             "3": [],
             "4": [],
             "5": [],
+            "6": [],
         },
         isUploading: false, // 是否正在上传数据。注意，上传数据指的是所有单元的数据都上传；
         isOpen: false,      // 蓝牙是否关闭
@@ -56,7 +59,6 @@ const BluetoothSlice = createSlice({
         // 数据管理
         pushData: (state, action) => {
             state.data[action.payload.id].push(action.payload)
-            console.log(`bluetoothSlice::pushData`);
         },
         shift: state => {
           // state.data[action.payload.id].shift();
@@ -65,9 +67,8 @@ const BluetoothSlice = createSlice({
         },
         pushCache: (state, action) => {
             // console.log("push 2");
-            // console.log(action.payload);
             for (let id in action.payload)
-                state.dataCache[id].push(action.payload.id)
+                state.dataCache[id].push(action.payload[id])
             // state.dataCache[action.payload.id].push(action.payload)
             // state.dataCache.push(action.payload);
             console.log(`bluetoothSlice::pushCache`);
@@ -117,22 +118,20 @@ const dataAndCacheSelector = createSelector(
 const sendDataToServer = createAsyncThunk(
     "bluetooth/sendData",
     async dataById => {
-        // connect to server
-        console.log("BluetoothSlice::sendDataToServer");
+        console.log(`BluetoothSlice::sendDataToServer ${SERVER_URL + ':' + PORT +'/bluetooth/store'}`);
 
         let dataList = []
         let lengthDict = {}
         for (let id in dataById) {
-            dataList.push(...dataById[id]);
+            dataList.push(dataById[id]);
             lengthDict[id] = dataById[id].length;
         }
-
-
         try {
             const response = await axios.post(
-                'http://192.168.1.105:8099/bluetooth/store',
+                // 'http://192.168.1.105:8099/bluetooth/store',
+                SERVER_URL + ':' + PORT +'/bluetooth/store',
                 {
-                    dataList: dataList,
+                    "dataList": dataList.flat(2)
                 },
                 {timeout: 2000}
             );
@@ -147,6 +146,10 @@ const sendDataToServer = createAsyncThunk(
             };
         } catch (err) {
             console.log("BluetoothSlice::sendDataToServer error", err);
+            return {
+                type: "fault",
+                info: `${err}`,
+            }
         }
     }
 );

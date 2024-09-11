@@ -11599,6 +11599,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-config@npm:^1.5.3":
+  version: 1.5.3
+  resolution: "react-native-config@npm:1.5.3"
+  peerDependencies:
+    react-native-windows: ">=0.61"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 0eb74e0a10ae6e96422671482da83dea16571f4f5ad848d1f18015dccbecb9cbc066788df72a88c630abf4aed0edb7616ec27704817cff18bd6ed7d61979d671
+  languageName: node
+  linkType: hard
+
 "react-native-gesture-handler@npm:^2.17.1":
   version: 2.17.1
   resolution: "react-native-gesture-handler@npm:2.17.1"
@@ -12635,6 +12647,7 @@ __metadata:
     react-native-ble-manager: ^11.5.5
     react-native-ble-plx: ^3.2.0
     react-native-bluetooth-classic: ^1.73.0-rc.9
+    react-native-config: ^1.5.3
     react-native-gesture-handler: ^2.17.1
     react-native-reanimated: ^3.12.1
     react-native-safe-area-context: ^4.10.4

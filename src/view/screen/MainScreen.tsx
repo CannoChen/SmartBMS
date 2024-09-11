@@ -1,26 +1,11 @@
 import React, {
-    useState,
-    useEffect,
-    useCallback
 } from 'react';
-import {
-    NativeEventEmitter,
-    NativeModules,
-    PermissionsAndroid,
-    Platform
-} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Icon } from '@rneui/themed';
 
 import HomeScreen from "./HomeScreen";
 import SettingScreen from "./SettingScreen.tsx";
 import DigitalTwinScreen from "./DigitalTwinScreen.tsx";
-// import {bleManager} from "../../config/static_resources.tsx";
-import {scanBleDevices} from "../../utils/utils.js";
-import LoadingPageComponent from "../component/LoadingPageComponent.tsx";
-import {useFocusEffect} from "@react-navigation/native";
-import BleManager from "react-native-ble-manager";
 
 
 
@@ -38,6 +23,7 @@ const Tab = createBottomTabNavigator();
  * @constructor
  */
 const MainScreen = () => {
+
     return (
         <>
             {/*<LoadingPageComponent />*/}

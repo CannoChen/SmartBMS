@@ -104,10 +104,16 @@ const option = {
             type: 'value',
             // scale: true,
             name: 'Volt 5',
-            // max: 4.0,
-            // min: 0.0,
+            max: 4.0,
+            min: 0.0,
             // boundaryGap: [0.2, 0.2],
         },
+        {
+            type: 'value',
+            name: 'Volt 6',
+            max: 4.0,
+            min: 0.0,
+        }
         // {
         //     type: 'value',
         //     // scale: true,
@@ -147,6 +153,11 @@ const option = {
         },
         {
             name: 'Volt 5',
+            type: 'line',
+            data: []
+        },
+        {
+            name: 'Volt 6',
             type: 'line',
             data: []
         },
@@ -200,7 +211,7 @@ const CellsDataPlotComponent = () => {
     useEffect(() => {
         if (!isInitialized || !chartRef.current) return;
 
-        // 延迟处理，数据缓存中最少要留10个数据。
+        // 延迟处理，数据缓存中最少要留15个数据。
         for (let id in data) {
             if (data[id].length <= 15)
                 return;
@@ -208,23 +219,26 @@ const CellsDataPlotComponent = () => {
 
         //缓冲区中有50个以上的数据，并且没有在上传数据，则继续上传缓冲区的数据
         let lengthList = Object.values(data).map(item => item.length)
-        if (Math.min(...lengthList) >= 50 && !isUploadin)
+        if (Math.min(...lengthList) >= 15 && !isUploading){
             dispatch(sendDataToServer(dataCache));
+        }
+
 
         // 获取数据，这里暂时采用暴力的方法获取数据
-        // step 1: 获取不同的电池
+        const ids = Object.keys(data)
+        const series = []
+
+        // step 1: 获取时间轴
         const categoriesCur = data["1"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
-        // const categoriesCur_2 = data["2"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
-        // const categoriesCur_3 = data["3"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
-        // const categoriesCur_4 = data["4"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
-        // const categoriesCur_5 = data["5"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
 
         // step 2: 获取不同电池的数据
-        const volt_1 = data["1"].map(item => item.volt).slice(10 > data.length ? data.length : 10);
-        const volt_2 = data["2"].map(item => item.volt).slice(10 > data.length ? data.length : 10);
-        const volt_3 = data["3"].map(item => item.volt).slice(10 > data.length ? data.length : 10);
-        const volt_4 = data["4"].map(item => item.volt).slice(10 > data.length ? data.length : 10);
-        const volt_5 = data["5"].map(item => item.volt).slice(10 > data.length ? data.length : 10);
+        ids.forEach(id => {
+            const volt = data[id].map(item => item.volt).slice(10 > data.length ? data.length : 10);
+            series.push({
+                name: `Volt ${id}`,
+                data: volt
+            })
+        })
 
         // const categoriesCur = data.map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
         // const volt = data.map(item => item.volt).slice(10 > data.length ? data.length : 10);
@@ -235,35 +249,12 @@ const CellsDataPlotComponent = () => {
                 { data: categoriesCur },
                 // { data: categoriesCur },
             ],
-            series: [
-                {
-                    name: "Volt 1",
-                    data: volt_1
-                },
-                {
-                    name: "Volt 2",
-                    data: volt_2
-                },
-                {
-                    name: "Volt 3",
-                    data: volt_3
-                },
-                {
-                    name: "Volt 4",
-                    data: volt_4
-                },
-                {
-                    name: "Volt 5",
-                    data: volt_5
-                },
-                // { data: valHighCur },
-                // { data: valLowCur },
-            ],
+            series: series
         });
         // 执行数据更新
         dispatch(pushCache(data));
         dispatch(shift());
-    }, [data]);
+    }, [data]);  // useEffect
 
     return (
         <View style={styles.container}>
