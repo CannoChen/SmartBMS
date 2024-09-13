@@ -41,6 +41,8 @@ const BluetoothSlice = createSlice({
         isUploading: false, // 是否正在上传数据。注意，上传数据指的是所有单元的数据都上传；
         isOpen: false,      // 蓝牙是否关闭
         isConnected: false, // 是否连接
+        isStopDynamicTest: false, // 是否停止动态工况测试
+        device: null,       // 蓝牙设备
     },
     reducers: {
         // 状态管理
@@ -50,11 +52,13 @@ const BluetoothSlice = createSlice({
         off: (state) => {
             state.isOpen = false;
         },
-        connect: (state) => {
+        connect: (state, action) => {
             state.isConnected = true;
+            state.device = action.payload;
         },
         disconnect: (state) => {
             state.isConnected = false;
+            state.device = null;
         },
         // 数据管理
         pushData: (state, action) => {
@@ -72,6 +76,30 @@ const BluetoothSlice = createSlice({
             // state.dataCache[action.payload.id].push(action.payload)
             // state.dataCache.push(action.payload);
             console.log(`bluetoothSlice::pushCache`);
+        },
+        clearCache: (state) => {
+            state.data = {
+                "1": [],
+                "2": [],
+                "3": [],
+                "4": [],
+                "5": [],
+                "6": [],
+            };
+            state.dataCache = {
+                "1": [],
+                "2": [],
+                "3": [],
+                "4": [],
+                "5": [],
+                "6": [],
+            };
+        },
+        stopDynamicTest: (state) => {
+            state.isStopDynamicTest = false;
+        },
+        startDynamicTest: (state) => {
+            state.isStopDynamicTest = true;
         }
     },
     extraReducers: builder => {
@@ -107,7 +135,6 @@ const dataAndCacheSelector = createSelector(
 );
 
 
-
 /**
  * 版本：0.1
  * 作者：Zeyang Chen
@@ -118,8 +145,7 @@ const dataAndCacheSelector = createSelector(
 const sendDataToServer = createAsyncThunk(
     "bluetooth/sendData",
     async dataById => {
-        console.log(`BluetoothSlice::sendDataToServer ${SERVER_URL + ':' + PORT +'/bluetooth/store'}`);
-
+        // console.log(`BluetoothSlice::sendDataToServer ${SERVER_URL + ':' + PORT +'/bluetooth/store'}`);
         let dataList = []
         let lengthDict = {}
         for (let id in dataById) {
@@ -139,16 +165,16 @@ const sendDataToServer = createAsyncThunk(
             // console.log(`BluetoothSlice::sendDataToServer result: ${response}`);
 
             return {
-                type: "success",
-                info: "Send data successful.",
-                length: lengthDict,
-                result: response.data,
+                "type": "success",
+                "info": "Send data successful.",
+                "length": lengthDict,
+                "result": response.data,
             };
         } catch (err) {
             console.log("BluetoothSlice::sendDataToServer error", err);
             return {
-                type: "fault",
-                info: `${err}`,
+                "type": "fault",
+                "info": `${err}`,
             }
         }
     }
@@ -163,5 +189,8 @@ export const {
     pushData,
     shift,
     pushCache,
+    stopDynamicTest,
+    startDynamicTest,
+    clearCache,
 } = BluetoothSlice.actions;
 export { sendDataToServer, dataAndCacheSelector };

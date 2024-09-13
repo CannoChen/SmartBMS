@@ -3,19 +3,25 @@ import {
     StyleSheet,
     ScrollView,
     SafeAreaView,
-    TouchableOpacity
+    TouchableOpacity, View
 } from "react-native";
 import { Card, Text } from '@rneui/themed';
 
 import HeaderComponent from "../component/HeaderComponent";
 import DynamicDataPlotComponent from "../component/DataPlotComponent";
 import {useEffect} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useBluetoothState} from "../../service/hooks/bluetoothHooks.ts";
-import {getConnectFunction} from "../../service/bluetooth.ts";
+import {
+    disconnectToDevice,
+    getConnectFunction,
+    runDynamicTest,
+    stopRunDynamicTest
+} from "../../service/bluetooth.ts";
 import RNBluetoothClassic from "react-native-bluetooth-classic";
 import {CellsDataPlotComponent} from "../component/CellsDataPlotComponent.tsx";
-import {off, on} from "../../service/slice/BlutoothSlice.ts";
+import {dataAndCacheSelector, off, on} from "../../service/slice/BlutoothSlice.ts";
+import {AwesomeButton} from "../component/AwesomeButton.tsx";
 
 /**
  * 主屏幕导航
@@ -38,6 +44,9 @@ import {off, on} from "../../service/slice/BlutoothSlice.ts";
 const HomeScreen = () => {
     // 创建变量
     const [isOPen, isConnected] = useBluetoothState();
+    const isStopDynamicTest = useSelector(state => state.bluetooth.isStopDynamicTest)
+    const device = useSelector(state => state.bluetooth.device);
+    const data = useSelector(state => state.bluetooth.data);
     const dispatch = useDispatch();
 
     // 经典蓝牙连接逻辑
@@ -83,10 +92,26 @@ const HomeScreen = () => {
                   <Text style={styles.fonts}>
                       Cell Min Voltage: 3.33V
                   </Text>
-
-                  <TouchableOpacity onPress={getConnectFunction(dispatch)}>
-                      <Text>Connect to BMS</Text>
-                  </TouchableOpacity>
+                  <Card.Divider />
+                  <View style={{marginBottom: 8}}>
+                  {
+                      isConnected ? (
+                          <AwesomeButton title="Disconnect to BMS" onPress={() => runDynamicTest(device, dispatch)} />
+                      ) : (
+                          <AwesomeButton title="Connect to BMS" onPress={getConnectFunction(dispatch)} />
+                      )
+                  }
+                  </View>
+                  <View>
+                      {
+                          isStopDynamicTest ? (
+                              <AwesomeButton title="Run dynamic test" onPress={() => runDynamicTest(device, dispatch)} />
+                          ) : (
+                              <AwesomeButton title="Stop dynamic test" onPress={() =>
+                                  stopRunDynamicTest(device, data, dispatch)} />
+                          )
+                      }
+                  </View>
               </Card>
 
               <Card>

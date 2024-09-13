@@ -1,7 +1,14 @@
 import RNBluetoothClassic, {BluetoothDevice} from "react-native-bluetooth-classic";
 import {PermissionsAndroid, Platform} from "react-native";
 import {Dispatch} from "@reduxjs/toolkit";
-import {pushData} from "./slice/BlutoothSlice.ts";
+import {
+    pushData,
+    connect,
+    disconnect,
+    stopDynamicTest,
+    startDynamicTest,
+    sendDataToServer, clearCache
+} from "./slice/BlutoothSlice.ts";
 import moment from "moment/moment";
 
 const requestBluetoothPermission = async () => {
@@ -124,6 +131,7 @@ const connectToPeripheral = async (device: BluetoothDevice | null | undefined, d
         else {
             console.log("bluetooth.ts::蓝牙配对成功");
         }
+        dispatch(connect(device))
 
         initializeRead(device, dispatch);
     } catch (error) {
@@ -137,11 +145,24 @@ const connectToPeripheral = async (device: BluetoothDevice | null | undefined, d
  * 功能：
  * - 连接蓝牙设备
  */
-const connect = async (dispatch: Dispatch) => {
-    console.log("connect");
+const connectToDevice = async (dispatch: Dispatch) => {
+    console.log("connectToDevice");
     await getBondedDevices()
         .then(device => startDiscovery(device))
         .then(device => connectToPeripheral(device, dispatch));
+}
+
+const disconnectToDevice = async (device: BluetoothDevice, dispatch: Dispatch) => {
+    console.log("disconnectToDevice");
+    try {
+        const disconnected = await device.disconnect();
+        if (disconnected)
+            dispatch(disconnect());
+        else
+            throw new Error("bluetooth.ts::蓝牙设备断开失败！");
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 /**
@@ -151,7 +172,7 @@ const connect = async (dispatch: Dispatch) => {
  * - 装饰器设计模式，获取连接蓝牙的函数。
  */
 const getConnectFunction = (dispatch: Dispatch) => {
-    return () => connect(dispatch);
+    return () => connectToDevice(dispatch);
 }
 
 /**
@@ -203,6 +224,45 @@ const performRead = async (device: BluetoothDevice, dispatch: Dispatch) =>  {
                 }
             }
         } // if (available > 0)
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+interface DataDictionary {
+    [key: string]: any[];
+}
+
+
+const stopRunDynamicTest = async (device: BluetoothDevice, data: DataDictionary, dispatch: Dispatch) => {
+    if (device === null)
+        return;
+    try {
+        const result = await device.write("#$stop");
+        if (result) {
+            console.log("暂停动态工况测试成功！");
+            dispatch(stopDynamicTest());  // 暂停工况发送
+            dispatch(sendDataToServer(data));
+            dispatch(clearCache());
+        } else
+            throw new Error("bluetooth.ts::暂停动态工况测试失败！")
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+const runDynamicTest = async (device: BluetoothDevice, dispatch: Dispatch) => {
+    if (device === null)
+        return;
+    try {
+        const result = await device.write("#$run");
+        if (result) {
+            console.log("运行动态工况测试成功！")
+            dispatch(startDynamicTest())
+        }
+        else
+            throw new Error("bluetooth.ts::运行动态工况测试失败！")
+        console.log(result);
     } catch (err) {
         console.log(err);
     }
@@ -265,9 +325,13 @@ type receivedData = {
     soc_perc: number,
     soc_mAh: number,
     timeStamp: string,
-}
+};
 
 export {
     requestBluetoothPermission,
-    getConnectFunction
+    getConnectFunction,
+    stopRunDynamicTest,
+    runDynamicTest,
+    connectToDevice,
+    disconnectToDevice
 };
