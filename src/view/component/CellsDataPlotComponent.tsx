@@ -113,7 +113,7 @@ const option = {
             name: 'Volt 6',
             max: 4.0,
             min: 0.0,
-        }
+        },
         // {
         //     type: 'value',
         //     // scale: true,
@@ -169,6 +169,53 @@ const option = {
     ],
 };  // option
 
+const option_2 = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#283b56',
+            },
+        },
+    },
+    legend: {},
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: { show: false, readOnly: false },
+            restore: {},
+        },
+    },
+    dataZoom: {
+        show: false,
+        start: 0,
+        end: 100,
+    },
+    xAxis: [
+        {
+            type: 'category',
+            boundaryGap: true,
+            data: [],
+        },
+    ],
+    yAxis: [
+        {
+            type: 'value',
+            name: 'SoC(%)',
+            min: 0,
+            max: 100,
+        },
+    ],
+    series: [
+        {
+            name: 'SoC(%)',
+            type: 'line',
+            data: []
+        },
+    ],
+};  // option
+
 /**
  * 版本：0.1
  * 作者：Zeyang Chen
@@ -185,31 +232,41 @@ const option = {
 const CellsDataPlotComponent = () => {
     const svgRef = useRef(null);
     const chartRef = useRef(null);
+    const svgRef_2 = useRef(null);
+    const chartRef_2 = useRef(null);
     const dispatch = useDispatch();
     const {data, dataCache} = useSelector(dataAndCacheSelector);
     const isUploading = useSelector(state => state.bluetooth.isUploading);
     const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
-        if (svgRef.current && !isInitialized) {
+        if (svgRef.current || svgRef_2.current && !isInitialized) {
             const chart = echarts.init(svgRef.current, 'light', {
                 renderer: 'svg',
                 width: E_WIDTH,
                 height: E_HEIGHT,
             });
+            const chart_2 = echarts.init(svgRef_2.current, 'light', {
+                renderer: 'svg',
+                width: E_WIDTH,
+                height: E_HEIGHT,
+            });
             chart.setOption(option);
+            chart_2.setOption(option_2);
             chartRef.current = chart;
+            chartRef_2.current = chart_2;
             setIsInitialized(true);
         }
 
         return () => {
             chartRef.current?.dispose();
+            chartRef_2.current?.dispose();
             setIsInitialized(false);
         };
     }, []);
 
     useEffect(() => {
-        if (!isInitialized || !chartRef.current) return;
+        if (!isInitialized || !chartRef.current || !chartRef_2.current) return;
 
         // 延迟处理，数据缓存中最少要留15个数据。
         for (let id in data) {
@@ -227,9 +284,43 @@ const CellsDataPlotComponent = () => {
         // 获取数据，这里暂时采用暴力的方法获取数据
         const ids = Object.keys(data)
         const series = []
+        const series_2 = []
 
         // step 1: 获取时间轴
-        const categoriesCur = data["1"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
+        // const categoriesCur = data["1"].map(item => item.timeStamp.slice(10)).slice(10 > data.length ? data.length : 10);
+
+        // step 2: 获取电流数据
+        // const current = data["1"].map(item => item.current_mA.slice(10)).slice(10 > data.length ? data.length : 10);
+        // series.push({
+        //     name: 'Current(A)',
+        //     data: current,
+        // })
+
+        // step 1: 获取时间轴、电流、SoC数据
+        const categoriesCur: number[] = []
+        const current: number[] = []
+        const soc_perc: number[] = [];
+        const soc_Ah: number[] = [];
+        data["1"].slice(10 > data["1"].length ? data["1"].length : 10).forEach(item => {
+            categoriesCur.push(item.timeStamp)
+            // current.push(item.current_mA)
+            soc_perc.push(item.soc_perc);
+            // soc_Ah.push(item.soc_Ah);
+        });
+        // series.push({
+        //     name: 'Current(A)',
+        //     data: current,
+        // })
+        series_2.push({
+            name: 'SoC(%)',
+            data: soc_perc
+        });
+        // console.log(soc_perc)
+        // series_2.push({
+        //     name: 'SoC(Ah)',
+        //     data: soc_Ah
+        // });
+
 
         // step 2: 获取不同电池的数据
         ids.forEach(id => {
@@ -251,6 +342,13 @@ const CellsDataPlotComponent = () => {
             ],
             series: series
         });
+        chartRef_2.current.setOption({
+            xAxis: [
+                {data: categoriesCur},
+                // { data: categoriesCur },
+            ],
+            series: series_2
+        });
         // 执行数据更新
         dispatch(pushCache(data));
         dispatch(shift());
@@ -259,6 +357,7 @@ const CellsDataPlotComponent = () => {
     return (
         <View style={styles.container}>
             <SvgChart ref={svgRef} />
+            <SvgChart ref={svgRef_2}/>
         </View>
     );
 }

@@ -136,7 +136,7 @@ const sendDataToServer = createAsyncThunk(
                 {timeout: 2000}
             );
 
-            console.log(`BluetoothSlice::sendDataToServer result: ${response}`);
+            // console.log(`BluetoothSlice::sendDataToServer result: ${response}`);
 
             return {
                 type: "success",

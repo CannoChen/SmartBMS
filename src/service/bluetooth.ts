@@ -213,10 +213,15 @@ const performRead = async (device: BluetoothDevice, dispatch: Dispatch) =>  {
  * 日期：2024-07-01
  * 功能：
  * - 解析蓝牙接收数据。
+ *
+ * 版本：0.2
+ * 日期：2024-09-11
+ * 功能：
+ * - 增加解析数据内容，包括 current_mA, soc_perc, soc_mAh。
  */
 const parseReceivedData = (data: String): receivedData | null => {
     // const regex = /\$\#s000(\d+)\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
-    const regex = /\[([^\$]+)\]\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$/;
+    const regex = /\[([^\$]+)\]\$\#s001([^\$]+)\$\#s002([^\$]+)\$\#s003([^\$]+)\$\#s110([^\$]+)\$\#s111([^\$]+)\$\#s112([^\$]+)\$/;
     const match = data.match(regex);
     if (match !== null) {
         const data_received = {
@@ -224,9 +229,13 @@ const parseReceivedData = (data: String): receivedData | null => {
             volt: parseFloat(match[2]),
             pole_temp: parseInt(match[3], 10),
             bal_temp: parseInt(match[4], 10),
+            current_A: parseFloat(match[5]) / 1000,
+            soc_perc: parseFloat(match[6]),
+            soc_mAh: parseFloat(match[7]),
             timeStamp: getCurrentFormattedTime(),
-            // timeStamp: new Date().toLocaleTimeString().replace(/^\D*/, ''),
         };
+        // console.log(`current_mA: ${data_received.current_mA} soc_perc: ${data_received.soc_perc}
+        //                 soc_mAh: ${data_received.soc_mAh}`)
         // console.log(`id ${data_received.id} volt: ${data_received.volt}`)
         return data_received;
     } else {
@@ -252,6 +261,9 @@ type receivedData = {
     volt: number,
     pole_temp: number,
     bal_temp: number
+    current_A: number,
+    soc_perc: number,
+    soc_mAh: number,
     timeStamp: string,
 }
 

@@ -1,5 +1,5 @@
 
 
-const SERVER_URL = "http://10.168.1.229"
+const SERVER_URL = "http://192.168.1.100"
 const PORT = "8099"
 export {SERVER_URL, PORT};
