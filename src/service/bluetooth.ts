@@ -238,8 +238,9 @@ const stopRunDynamicTest = async (device: BluetoothDevice, data: DataDictionary,
     if (device === null)
         return;
     try {
-        const result = await device.write("#$stop");
+        const result = await device.write("#$stop\n");
         if (result) {
+            console.log(`result: ${result}`);
             console.log("暂停动态工况测试成功！");
             dispatch(stopDynamicTest());  // 暂停工况发送
             dispatch(sendDataToServer(data));
@@ -255,7 +256,7 @@ const runDynamicTest = async (device: BluetoothDevice, dispatch: Dispatch) => {
     if (device === null)
         return;
     try {
-        const result = await device.write("#$run");
+        const result = await device.write("#$run\n");
         if (result) {
             console.log("运行动态工况测试成功！")
             dispatch(startDynamicTest())

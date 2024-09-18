@@ -62,19 +62,25 @@ const BluetoothSlice = createSlice({
         },
         // 数据管理
         pushData: (state, action) => {
-            state.data[action.payload.id].push(action.payload)
+            // console.log(action.payload["id"])
+            state.data[action.payload["id"]].push(action.payload);
+            // console.log(state.data["1"]);
         },
         shift: state => {
           // state.data[action.payload.id].shift();
+            console.log(`Before clear, length of data is ${state.data["1"].length}.`);
             for (let id in state.data)
                 state.data[id].shift();
+            console.log(`Before clear, length of data is ${state.data["1"].length}.`)
         },
         pushCache: (state, action) => {
-            // console.log("push 2");
-            for (let id in action.payload)
-                state.dataCache[id].push(action.payload[id])
+            for (let id in action.payload) {
+                state.dataCache[id].push(action.payload[id]);
+                state.dataCache[id] = state.dataCache[id].flat(2);
+            }
             // state.dataCache[action.payload.id].push(action.payload)
             // state.dataCache.push(action.payload);
+            // console.log(state.dataCache["1"]);
             console.log(`bluetoothSlice::pushCache`);
         },
         clearCache: (state) => {
@@ -96,10 +102,10 @@ const BluetoothSlice = createSlice({
             };
         },
         stopDynamicTest: (state) => {
-            state.isStopDynamicTest = false;
+            state.isStopDynamicTest = true;
         },
         startDynamicTest: (state) => {
-            state.isStopDynamicTest = true;
+            state.isStopDynamicTest = false;
         }
     },
     extraReducers: builder => {
@@ -108,13 +114,16 @@ const BluetoothSlice = createSlice({
                 state.isUploading = true;
             })
             .addCase(sendDataToServer.fulfilled, (state, action) => {
-                console.log("BluetoothSlice::sendDataToServer.fulfilled");
-                const deleteCountList = action.payload.length;
-                for (let id in deleteCountList)  // 清空缓存
-                    state.dataCache[id].splice(0, deleteCountList[id])
-                // state.dataCache.splice(0, deleteCount);  // 清空缓存
-                state.isUploading = false;
-                // state.cur = state.cur - 50;    // 设置绘图指示器
+                if (action.payload['type'] === 'success'){
+                    console.log("BluetoothSlice::sendDataToServer.fulfilled");
+                    const deleteCountList = action.payload["length"];
+                    console.log(`Before clear, length of dataCache is ${state.dataCache["1"].length}.`);
+                    console.log(`deleteCountList: ${deleteCountList}`);
+                    for (let id in deleteCountList)  // 清空缓存
+                        state.dataCache[id].splice(0, deleteCountList[id]);
+                    console.log(`After clear, length of dataCache is ${state.dataCache["1"].length}.`);
+                    state.isUploading = false;
+                }
             })
             .addCase(sendDataToServer.rejected, (state, action) => {
                 console.log("BluetoothSlice::sendDataToServer.rejected");
@@ -150,7 +159,8 @@ const sendDataToServer = createAsyncThunk(
         let lengthDict = {}
         for (let id in dataById) {
             dataList.push(dataById[id]);
-            lengthDict[id] = dataById[id].length;
+            // console.log(dataById)
+            lengthDict[id] = dataById[id].flat(2).length;
         }
         try {
             const response = await axios.post(
@@ -159,7 +169,7 @@ const sendDataToServer = createAsyncThunk(
                 {
                     "dataList": dataList.flat(2)
                 },
-                {timeout: 2000}
+                {timeout: 10000}
             );
 
             // console.log(`BluetoothSlice::sendDataToServer result: ${response}`);
