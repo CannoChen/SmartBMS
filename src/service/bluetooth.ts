@@ -152,10 +152,11 @@ const connectToDevice = async (dispatch: Dispatch) => {
         .then(device => connectToPeripheral(device, dispatch));
 }
 
-const disconnectToDevice = async (device: BluetoothDevice, dispatch: Dispatch) => {
+// const stopRunDynamicTest = async (device: BluetoothDevice, data: DataDictionary, dispatch: Dispatch)
+const disconnectToDevice = async (device: BluetoothDevice, data: DataDictionary,  dispatch: Dispatch) => {
     console.log("disconnectToDevice");
     try {
-        const disconnected = await device.disconnect();
+        const disconnected = await stopRunDynamicTest(device, data, dispatch).then(() => device.disconnect());
         if (disconnected)
             dispatch(disconnect());
         else
@@ -236,7 +237,7 @@ interface DataDictionary {
 
 const stopRunDynamicTest = async (device: BluetoothDevice, data: DataDictionary, dispatch: Dispatch) => {
     if (device === null)
-        return;
+        return false;
     try {
         const result = await device.write("#$stop\n");
         if (result) {
@@ -249,7 +250,9 @@ const stopRunDynamicTest = async (device: BluetoothDevice, data: DataDictionary,
             throw new Error("bluetooth.ts::暂停动态工况测试失败！")
     } catch (err) {
         console.log(err);
+        return false;
     }
+    return true
 }
 
 const runDynamicTest = async (device: BluetoothDevice, dispatch: Dispatch) => {
