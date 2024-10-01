@@ -8,7 +8,6 @@ import {
 import { Card, Text } from '@rneui/themed';
 
 import HeaderComponent from "../component/HeaderComponent";
-import DynamicDataPlotComponent from "../component/DataPlotComponent";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useBluetoothState} from "../../service/hooks/bluetoothHooks.ts";
@@ -96,7 +95,9 @@ const HomeScreen = () => {
                   <View style={{marginBottom: 8}}>
                   {
                       isConnected ? (
-                          <AwesomeButton title="Disconnect to BMS" onPress={() => runDynamicTest(device, dispatch)} />
+                          <AwesomeButton title="Disconnect to BMS" onPress={
+                              () => disconnectToDevice(device, data, dispatch)
+                          } />
                       ) : (
                           <AwesomeButton title="Connect to BMS" onPress={getConnectFunction(dispatch)} />
                       )
