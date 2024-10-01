@@ -28,6 +28,7 @@ const BluetoothSlice = createSlice({
             "4": [],
             "5": [],
             "6": [],
+            "7": [],
         },
         // 缓冲区2，用于发送并存储到服务器端；
         dataCache: {
@@ -37,6 +38,7 @@ const BluetoothSlice = createSlice({
             "4": [],
             "5": [],
             "6": [],
+            "7": [],
         },
         isUploading: false, // 是否正在上传数据。注意，上传数据指的是所有单元的数据都上传；
         isOpen: false,      // 蓝牙是否关闭
@@ -91,6 +93,7 @@ const BluetoothSlice = createSlice({
                 "4": [],
                 "5": [],
                 "6": [],
+                "7": [],
             };
             state.dataCache = {
                 "1": [],
@@ -99,6 +102,7 @@ const BluetoothSlice = createSlice({
                 "4": [],
                 "5": [],
                 "6": [],
+                "7": [],
             };
         },
         stopDynamicTest: (state) => {

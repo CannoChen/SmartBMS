@@ -114,6 +114,12 @@ const option = {
             max: 4.0,
             min: 0.0,
         },
+        {
+            type: 'value',
+            name: 'Volt 7',
+            max: 4.0,
+            min: 0.0,
+        }
         // {
         //     type: 'value',
         //     // scale: true,
@@ -161,6 +167,11 @@ const option = {
             type: 'line',
             data: []
         },
+        {
+            name: 'Volt 7',
+            type: 'line',
+            data: []
+        }
         // {
         //     name: 'valLow',
         //     type: 'line',
