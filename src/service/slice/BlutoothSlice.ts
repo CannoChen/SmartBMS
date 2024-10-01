@@ -43,7 +43,7 @@ const BluetoothSlice = createSlice({
         isUploading: false, // 是否正在上传数据。注意，上传数据指的是所有单元的数据都上传；
         isOpen: false,      // 蓝牙是否关闭
         isConnected: false, // 是否连接
-        isStopDynamicTest: false, // 是否停止动态工况测试
+        isStopDynamicTest: true, // 是否停止动态工况测试
         device: null,       // 蓝牙设备
     },
     reducers: {
@@ -60,6 +60,7 @@ const BluetoothSlice = createSlice({
         },
         disconnect: (state) => {
             state.isConnected = false;
+            state.isStopDynamicTest = false;
             state.device = null;
         },
         // 数据管理
