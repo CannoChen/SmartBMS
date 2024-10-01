@@ -1,9 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
 import bluetoothReducer from "../service/slice/BlutoothSlice.ts";
+import TFLiteSlice from "../service/slice/TFLiteSlice.ts";
 
 const store = configureStore({
     reducer: {
         "bluetooth": bluetoothReducer,
+        "tflite": TFLiteSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

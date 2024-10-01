@@ -21,6 +21,8 @@ import RNBluetoothClassic from "react-native-bluetooth-classic";
 import {CellsDataPlotComponent} from "../component/CellsDataPlotComponent.tsx";
 import {dataAndCacheSelector, off, on} from "../../service/slice/BlutoothSlice.ts";
 import {AwesomeButton} from "../component/AwesomeButton.tsx";
+import {loadTFLiteModel} from "../../service/slice/TFLiteSlice.ts";
+
 
 /**
  * 主屏幕导航
@@ -46,10 +48,12 @@ const HomeScreen = () => {
     const isStopDynamicTest = useSelector(state => state.bluetooth.isStopDynamicTest)
     const device = useSelector(state => state.bluetooth.device);
     const data = useSelector(state => state.bluetooth.data);
+    const model = useSelector(state => state.tflite.model);
     const dispatch = useDispatch();
 
     // 经典蓝牙连接逻辑
     useEffect(() => {
+        dispatch(loadTFLiteModel())
         RNBluetoothClassic.isBluetoothEnabled().then(() => {
             console.log('蓝牙适配器准备完毕！');
         });
@@ -67,6 +71,9 @@ const HomeScreen = () => {
             disabledSubscription.remove();
         };
     }, []);
+
+    if (model)
+        console.log(model);
 
     return (
       <SafeAreaView style={styles.container}>
