@@ -1,8 +1,8 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import axios from "axios/index";
-import {PORT, SERVER_URL} from "../../config/url_config.ts";
 import * as tf from '@tensorflow/tfjs';
-import {loadTensorflowModel} from "react-native-fast-tflite";
+import {
+    bundleResourceIO,
+} from '@tensorflow/tfjs-react-native';
 
 
 const TFLiteSlice = createSlice({
@@ -32,10 +32,34 @@ const loadTFLiteModel = createAsyncThunk(
     "tflite/loadTFLiteModel",
     async state => {
         try {
-            const model = await loadTensorflowModel(require('assets/models/tflite_model.tflite'))
+            await tf.ready();
+            // Load my model.
+            // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection
+            console.log("开始读取tflite模型！！！");
+            const modelJson = require("../../../public/my_tflite_model/model.json");
+            const modelWeights1 = require("../../../public/my_tflite_model/group1-shard1of8.bin");
+            const modelWeights2 = require("../../../public/my_tflite_model/group1-shard2of8.bin");
+            const modelWeights3 = require("../../../public/my_tflite_model/group1-shard3of8.bin");
+            const modelWeights4 = require("../../../public/my_tflite_model/group1-shard4of8.bin");
+            const modelWeights5 = require("../../../public/my_tflite_model/group1-shard5of8.bin");
+            const modelWeights6 = require("../../../public/my_tflite_model/group1-shard6of8.bin");
+            const modelWeights7 = require("../../../public/my_tflite_model/group1-shard7of8.bin");
+            const modelWeights8 = require("../../../public/my_tflite_model/group1-shard8of8.bin");
+            const ioHandler = bundleResourceIO(modelJson, [
+                modelWeights1,
+                modelWeights2,
+                modelWeights3,
+                modelWeights4,
+                modelWeights5,
+                modelWeights6,
+                modelWeights7,
+                modelWeights8,
+            ]);
+            const model = await tf.loadLayersModel(ioHandler);
+            console.log("tflite模型读取完毕！！！");
             return {
                 "type": "success",
-                "model": model,
+                "model": undefined,
             }
         } catch (err) {
             console.log("TFLiteSlice::loadTFLiteModel error", err);

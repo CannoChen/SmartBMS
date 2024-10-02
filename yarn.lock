@@ -2877,6 +2877,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-async-storage/async-storage@npm:1.23.1":
+  version: 1.23.1
+  resolution: "@react-native-async-storage/async-storage@npm:1.23.1"
+  dependencies:
+    merge-options: ^3.0.4
+  peerDependencies:
+    react-native: ^0.0.0-0 || >=0.60 <1.0
+  checksum: 7096546ed4a5faf1f6e0425e2e15713575f1a7493a04524da386ff35c3844b57b8fd20544fad4157b4a61e048b10235f2f06124f262da5b327edc74fbc31e02b
+  languageName: node
+  linkType: hard
+
 "@react-native-community/cli-clean@npm:13.6.8":
   version: 13.6.8
   resolution: "@react-native-community/cli-clean@npm:13.6.8"
@@ -3666,6 +3677,121 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tensorflow/tfjs-backend-cpu@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-backend-cpu@npm:4.21.0"
+  dependencies:
+    "@types/seedrandom": ^2.4.28
+    seedrandom: ^3.0.5
+  peerDependencies:
+    "@tensorflow/tfjs-core": 4.21.0
+  checksum: 43ee7e5e8f3d37e91c6248555b80f697dcb294638fdd17314ddedfcdfa9086d19b101555b2c35d2a41eaa5407e11ad4612b929488e832c252a5c1af3a6b97b2e
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-backend-webgl@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-backend-webgl@npm:4.21.0"
+  dependencies:
+    "@tensorflow/tfjs-backend-cpu": 4.21.0
+    "@types/offscreencanvas": ~2019.3.0
+    "@types/seedrandom": ^2.4.28
+    seedrandom: ^3.0.5
+  peerDependencies:
+    "@tensorflow/tfjs-core": 4.21.0
+  checksum: 940d874a3ab2fadebe07394813bea44bf2adf149212b4ce08d0bf0f3c6bcd9d225338abc512cdd5fac009398fa874ea7acd4d5b5d8ad89af06ea459fc31edf27
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-converter@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-converter@npm:4.21.0"
+  peerDependencies:
+    "@tensorflow/tfjs-core": 4.21.0
+  checksum: ca20c9cc2c5ebf1555f3159e67b7226770d334c1af14ea5517d77335c183f20f9534f61ee00d3974b823d3758e312726301156896b054b1b9f2614b32878aea8
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-core@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-core@npm:4.21.0"
+  dependencies:
+    "@types/long": ^4.0.1
+    "@types/offscreencanvas": ~2019.7.0
+    "@types/seedrandom": ^2.4.28
+    "@webgpu/types": 0.1.38
+    long: 4.0.0
+    node-fetch: ~2.6.1
+    seedrandom: ^3.0.5
+  checksum: b6863b88d80ab76fb1b70a1d4b46f8422a0ed1b2f63346d3e7394f8ec49e1d777fb69e133830127385e65ab4fcc5c2ea296cbee29068360901269a6353718f4c
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-data@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-data@npm:4.21.0"
+  dependencies:
+    "@types/node-fetch": ^2.1.2
+    node-fetch: ~2.6.1
+    string_decoder: ^1.3.0
+  peerDependencies:
+    "@tensorflow/tfjs-core": 4.21.0
+    seedrandom: ^3.0.5
+  checksum: 00711072b3aa6e62af70d087b41bc2b8991fdd8e99493c78d9ad4ee8a6705f1c5a13fedee9e9dcb0264b2b32c48efd44a90e7e87e6c99c245f3bac0aca986b98
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-layers@npm:4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs-layers@npm:4.21.0"
+  peerDependencies:
+    "@tensorflow/tfjs-core": 4.21.0
+  checksum: 9988d7546ada481835dab4a24dfc237040fdb978f37c9d4e067dddbad824349fc58d1cb31f76e2663d603481add3123e20bc9e89ed37ae7d2725f153a7f1e276
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs-react-native@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@tensorflow/tfjs-react-native@npm:1.0.0"
+  dependencies:
+    base64-js: ^1.3.0
+    buffer: ^5.2.1
+    jpeg-js: ^0.4.3
+  peerDependencies:
+    "@react-native-async-storage/async-storage": ^1.13.0
+    "@tensorflow/tfjs-backend-cpu": ^4.13.0
+    "@tensorflow/tfjs-backend-webgl": ^4.13.0
+    "@tensorflow/tfjs-core": ^4.13.0
+    expo-camera: ^13.4.4
+    expo-gl: ^13.0.1
+    react: "*"
+    react-native: ">= 0.72.0"
+    react-native-fs: ^2.20.0
+  checksum: e8a5491126e5ee2e995668bb73563ab4a09991e6d758021fe4fcb7fb61b7bbbe7a690bcff1be156975f266d1f249416b7077f13eb6dc07b94b7c12c9c77eb9aa
+  languageName: node
+  linkType: hard
+
+"@tensorflow/tfjs@npm:^4.21.0":
+  version: 4.21.0
+  resolution: "@tensorflow/tfjs@npm:4.21.0"
+  dependencies:
+    "@tensorflow/tfjs-backend-cpu": 4.21.0
+    "@tensorflow/tfjs-backend-webgl": 4.21.0
+    "@tensorflow/tfjs-converter": 4.21.0
+    "@tensorflow/tfjs-core": 4.21.0
+    "@tensorflow/tfjs-data": 4.21.0
+    "@tensorflow/tfjs-layers": 4.21.0
+    argparse: ^1.0.10
+    chalk: ^4.1.0
+    core-js: 3.29.1
+    regenerator-runtime: ^0.13.5
+    yargs: ^16.0.3
+  bin:
+    tfjs-custom-module: dist/tools/custom_module/cli.js
+  checksum: 340875a4ee42f07f4a4b9d7a4ca9ef0f0588298ce8718e9d17cdfa3d7003df51e75eb541bfe99f1e1e5e729edc16423a968bf6a6096aeaf8389604b9f437c5f6
+  languageName: node
+  linkType: hard
+
 "@tweenjs/tween.js@npm:~23.1.1":
   version: 23.1.2
   resolution: "@tweenjs/tween.js@npm:23.1.2"
@@ -3769,6 +3895,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/long@npm:^4.0.1":
+  version: 4.0.2
+  resolution: "@types/long@npm:4.0.2"
+  checksum: d16cde7240d834cf44ba1eaec49e78ae3180e724cd667052b194a372f350d024cba8dd3f37b0864931683dab09ca935d52f0c4c1687178af5ada9fc85b0635f4
+  languageName: node
+  linkType: hard
+
+"@types/node-fetch@npm:^2.1.2":
+  version: 2.6.11
+  resolution: "@types/node-fetch@npm:2.6.11"
+  dependencies:
+    "@types/node": "*"
+    form-data: ^4.0.0
+  checksum: 180e4d44c432839bdf8a25251ef8c47d51e37355ddd78c64695225de8bc5dc2b50b7bb855956d471c026bb84bd7295688a0960085e7158cbbba803053492568b
+  languageName: node
+  linkType: hard
+
 "@types/node-forge@npm:^1.3.0":
   version: 1.3.11
   resolution: "@types/node-forge@npm:1.3.11"
@@ -3796,10 +3939,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/offscreencanvas@npm:^2019.6.4":
+"@types/offscreencanvas@npm:^2019.6.4, @types/offscreencanvas@npm:~2019.7.0":
   version: 2019.7.3
   resolution: "@types/offscreencanvas@npm:2019.7.3"
   checksum: 53a394a65ae08eddff6e0a2a8db72abecc94f41fc8fee166e8900075d3c1ca32540ddf5b4836c37357d53a0253a03fea4d781b2db543e3f08bc1cdc2dc0fefb5
+  languageName: node
+  linkType: hard
+
+"@types/offscreencanvas@npm:~2019.3.0":
+  version: 2019.3.0
+  resolution: "@types/offscreencanvas@npm:2019.3.0"
+  checksum: 006361d170aac80925b16a8c0421d5ee7bfe6acb5cd6b22407e2c28be091becc7de5ba1fd21293a1fdff70648918d9c035001ffafd4d6c49d1c5a22dab88ed0d
   languageName: node
   linkType: hard
 
@@ -3863,6 +4013,13 @@ __metadata:
     "@types/prop-types": "*"
     csstype: ^3.0.2
   checksum: c63d6a78163244e2022b01ef79b0baec4fe4da3475dc4a90bb8accefad35ef0c43560fd0312e5974f92a0f1108aa4d669ac72d73d66396aa060ea03b5d2e3873
+  languageName: node
+  linkType: hard
+
+"@types/seedrandom@npm:^2.4.28":
+  version: 2.4.34
+  resolution: "@types/seedrandom@npm:2.4.34"
+  checksum: d9bcf58dbdbf7f3c708e6d252e15a452ee9a289905d1dedec80d18d5c57cc6ab777687da189ebc4ad8840bd2d89a6b8812c878c90f014ed5a598f09157a9ad3e
   languageName: node
   linkType: hard
 
@@ -4186,6 +4343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@webgpu/types@npm:0.1.38":
+  version: 0.1.38
+  resolution: "@webgpu/types@npm:0.1.38"
+  checksum: a3eb01e601a22e1722a0dad4080fbaacb145a927b88479224a65a932d83dbc21308609b00dbf46acf411aedfac49ff45e222b81e6093c4abbeb2686f881b8e5d
+  languageName: node
+  linkType: hard
+
 "@wuba/react-native-echarts@npm:^1.3.1":
   version: 1.3.1
   resolution: "@wuba/react-native-echarts@npm:1.3.1"
@@ -4479,7 +4643,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"argparse@npm:^1.0.7":
+"argparse@npm:^1.0.10, argparse@npm:^1.0.7":
   version: 1.0.10
   resolution: "argparse@npm:1.0.10"
   dependencies:
@@ -4837,7 +5001,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.2.3, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
+"base-64@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "base-64@npm:0.1.0"
+  checksum: 5a42938f82372ab5392cbacc85a5a78115cbbd9dbef9f7540fa47d78763a3a8bd7d598475f0d92341f66285afd377509851a9bb5c67bbecb89686e9255d5b3eb
+  languageName: node
+  linkType: hard
+
+"base64-js@npm:^1.2.3, base64-js@npm:^1.3.0, base64-js@npm:^1.3.1, base64-js@npm:^1.5.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -4996,7 +5167,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:^5.4.3, buffer@npm:^5.5.0":
+"buffer@npm:^5.2.1, buffer@npm:^5.4.3, buffer@npm:^5.5.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
   dependencies:
@@ -5521,6 +5692,13 @@ __metadata:
   dependencies:
     browserslist: ^4.23.0
   checksum: 5e7430329358bced08c30950512d2081aea0a5652b4c5892cbb3c4a6db05b0d3893a191a955162a07fdb5f4fe74e61b6429fdb503f54e062336d76e43c9555d9
+  languageName: node
+  linkType: hard
+
+"core-js@npm:3.29.1":
+  version: 3.29.1
+  resolution: "core-js@npm:3.29.1"
+  checksum: b38446dbfcfd3887b3d4922990da487e2c95044cb4c5717aaf95e786a4c6b218f05c056c7ed6c699169b9794a49fec890e402659d54661fc56965a0eb717e7bd
   languageName: node
   linkType: hard
 
@@ -6750,6 +6928,17 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 9477277fe9f0c2b0cd60616cbcf4ee867ee2a9cfade5041d4f1cf34768569c6b19c457ee2364b940457f66254ee65a4128cc6a3605847806ed498dc83816515c
+  languageName: node
+  linkType: hard
+
+"expo-camera@npm:~15.0.16":
+  version: 15.0.16
+  resolution: "expo-camera@npm:15.0.16"
+  dependencies:
+    invariant: ^2.2.4
+  peerDependencies:
+    expo: "*"
+  checksum: 5bd41377c40f1be5caa9f94755b22da82afd7626a1d7f2cb2648a6dcd16cf9681d855fa59b16a01629749d59b24cf8f1984edd32dce45ba86fe4926d5645f0d1
   languageName: node
   linkType: hard
 
@@ -8137,6 +8326,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-plain-obj@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-plain-obj@npm:2.1.0"
+  checksum: cec9100678b0a9fe0248a81743041ed990c2d4c99f893d935545cfbc42876cbe86d207f3b895700c690ad2fa520e568c44afc1605044b535a7820c1d40e38daa
+  languageName: node
+  linkType: hard
+
 "is-plain-object@npm:^2.0.4":
   version: 2.0.4
   resolution: "is-plain-object@npm:2.0.4"
@@ -8881,6 +9077,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jpeg-js@npm:^0.4.3":
+  version: 0.4.4
+  resolution: "jpeg-js@npm:0.4.4"
+  checksum: bd7cb61aa8df40a9ee2c2106839c3df6054891e56cfc22c0ac581402e06c6295f962a4754b0b2ac50a401789131b1c6dc9df8d24400f1352168be1894833c590
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -9331,6 +9534,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"long@npm:4.0.0":
+  version: 4.0.0
+  resolution: "long@npm:4.0.0"
+  checksum: 16afbe8f749c7c849db1f4de4e2e6a31ac6e617cead3bdc4f9605cb703cd20e1e9fc1a7baba674ffcca57d660a6e5b53a9e236d7b25a295d3855cca79cc06744
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -9490,6 +9700,15 @@ __metadata:
   version: 0.2.0
   resolution: "memory-cache@npm:0.2.0"
   checksum: 255c87fec360ce06818ca7aeb5850d798e14950a9fcea879d88e1f8d1f4a6cffb8ed16da54aa677f5ec8e47773fbe15775a1cdf837ac190e17e9fb4b71e87bee
+  languageName: node
+  linkType: hard
+
+"merge-options@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "merge-options@npm:3.0.4"
+  dependencies:
+    is-plain-obj: ^2.1.0
+  checksum: d86ddb3dd6e85d558dbf25dc944f3527b6bacb944db3fdda6e84a3f59c4e4b85231095f58b835758b9a57708342dee0f8de0dffa352974a48221487fe9f4584f
   languageName: node
   linkType: hard
 
@@ -10065,6 +10284,20 @@ __metadata:
     encoding:
       optional: true
   checksum: d76d2f5edb451a3f05b15115ec89fc6be39de37c6089f1b6368df03b91e1633fd379a7e01b7ab05089a25034b2023d959b47e59759cb38d88341b2459e89d6e5
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:~2.6.1":
+  version: 2.6.13
+  resolution: "node-fetch@npm:2.6.13"
+  dependencies:
+    whatwg-url: ^5.0.0
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 055845ae5b4796c78c7053564745345025cf959563b3568b43c385f67d311779e6b00e5fef6ed1b79f86ba4048e4b4b722e1aa948305521b9353eb7e788912c9
   languageName: node
   linkType: hard
 
@@ -11611,13 +11844,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-fast-tflite@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "react-native-fast-tflite@npm:1.4.0"
+"react-native-fs@npm:^2.20.0":
+  version: 2.20.0
+  resolution: "react-native-fs@npm:2.20.0"
+  dependencies:
+    base-64: ^0.1.0
+    utf8: ^3.0.0
   peerDependencies:
-    react: "*"
     react-native: "*"
-  checksum: 73f1ff94b279a9a390119b2041113c0ab20dfa1cb96b07691dd361ba3c6be6f45fd76ece10d3c1bf262cbf9e1aae8ae49e2dd2cf8966f63a751584e560205e6d
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 0be9bb9a5c13b501d0a3006efc3aa5c0b5b211456ee04718297f4e522532f3527f1daa220bd67d3b82d819ed8fdab8f64b7d6e0d7b768c1fd1d8ec9122d94316
   languageName: node
   linkType: hard
 
@@ -11957,7 +12196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.2":
+"regenerator-runtime@npm:^0.13.2, regenerator-runtime@npm:^0.13.5":
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
   checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
@@ -12358,6 +12597,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"seedrandom@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "seedrandom@npm:3.0.5"
+  checksum: 728b56bc3bc1b9ddeabd381e449b51cb31bdc0aa86e27fcd0190cea8c44613d5bcb2f6bb63ed79f78180cbe791c20b8ec31a9627f7b7fc7f476fd2bdb7e2da9f
+  languageName: node
+  linkType: hard
+
 "selfsigned@npm:^2.4.1":
   version: 2.4.1
   resolution: "selfsigned@npm:2.4.1"
@@ -12622,6 +12868,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@react-native-async-storage/async-storage": 1.23.1
     "@react-native/babel-preset": 0.74.84
     "@react-native/eslint-config": 0.74.84
     "@react-native/metro-config": 0.74.84
@@ -12635,6 +12882,8 @@ __metadata:
     "@rneui/base": ^4.0.0-rc.7
     "@rneui/themed": ^4.0.0-rc.7
     "@shopify/react-native-skia": ^1.3.3
+    "@tensorflow/tfjs": ^4.21.0
+    "@tensorflow/tfjs-react-native": ^1.0.0
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
     "@wuba/react-native-echarts": ^1.3.1
@@ -12644,6 +12893,7 @@ __metadata:
     echarts: ^5.5.0
     eslint: ^8.19.0
     expo: ^51.0.0
+    expo-camera: ~15.0.16
     expo-gl: ~14.0.2
     jest: ^29.6.3
     lodash: ^4.17.21
@@ -12658,7 +12908,7 @@ __metadata:
     react-native-ble-plx: ^3.2.0
     react-native-bluetooth-classic: ^1.73.0-rc.9
     react-native-config: ^1.5.3
-    react-native-fast-tflite: ^1.4.0
+    react-native-fs: ^2.20.0
     react-native-gesture-handler: ^2.17.1
     react-native-reanimated: ^3.12.1
     react-native-safe-area-context: ^4.10.4
@@ -12950,7 +13200,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string_decoder@npm:^1.1.1":
+"string_decoder@npm:^1.1.1, string_decoder@npm:^1.3.0":
   version: 1.3.0
   resolution: "string_decoder@npm:1.3.0"
   dependencies:
@@ -13793,6 +14043,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"utf8@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "utf8@npm:3.0.0"
+  checksum: cb89a69ad9ab393e3eae9b25305b3ff08bebca9adc839191a34f90777eb2942f86a96369d2839925fea58f8f722f7e27031d697f10f5f39690f8c5047303e62d
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:~1.0.1":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -14327,7 +14584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs@npm:^16.1.1":
+"yargs@npm:^16.0.3, yargs@npm:^16.1.1":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
   dependencies:
