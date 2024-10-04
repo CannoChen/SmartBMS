@@ -57,6 +57,15 @@ const loadTFLiteModel = createAsyncThunk(
             ]);
             const model = await tf.loadLayersModel(ioHandler);
             console.log("tflite模型读取完毕！！！");
+            const test_data = tf.randomNormal([1, 2048, 18])
+            console.log("开始测试")
+            const startTime = new Date().getTime();
+            for (let i=0; i<1000 ;i++){
+                const res = model.predict(test_data) as tf.Tensor;
+            }
+            const endTime = new Date().getTime();
+            console.log(`测试结束: ${(endTime - startTime) / 1000}`)
+
             return {
                 "type": "success",
                 "model": undefined,
